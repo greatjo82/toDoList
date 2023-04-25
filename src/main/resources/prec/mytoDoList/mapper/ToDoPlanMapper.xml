@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="prec.mytoDoList.mapper.ToDoPlanMapper">
+
+	<select id="getList" resultType="prec.mytoDoList.domain.ToDoPlanVO">
+	<![CDATA[
+		select * from tbl_todoplan where bno > 0 
+		]]>
+	</select>
+
+	<insert id="insert">
+		insert into tbl_todoplan (bno, title, status)
+		values (seq_todoplan.nextval, #{title}, 'in gross')
+	</insert>
+
+	<insert id="insertSelectKey">
+
+		<selectKey keyProperty="bno" order="BEFORE"
+			resultType="long">
+			select seq_todoplan.nextval from dual
+		</selectKey>
+
+		insert into tbl_todoplan (bno,title,status)
+		values (#{bno}, #{title}, 'in gross')
+	</insert>
+
+	<select id="read" resultType="prec.mytoDoList.domain.ToDoPlanVO">
+		select * from tbl_todoplan where bno = #{bno}
+	</select>
+
+	<update id="update">
+		update tbl_todoplan
+		set title= #{title}
+		    ,status = #{status}
+		    ,regDate = sysdate
+		where bno = #{bno}
+	</update>
+
+	<delete id="delete">
+		delete tbl_todoplan where bno = #{bno}
+	</delete>
+</mapper>
